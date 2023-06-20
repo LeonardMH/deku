@@ -37,9 +37,9 @@ macro_rules! ImplDekuTupleTraits {
         impl<'a, Ctx: Copy, $($T:DekuRead<'a, Ctx>+Sized),+> DekuRead<'a, Ctx> for ($($T,)+)
         {
             fn read(
-                input: &'a BitSlice<u8, Msb0>,
+                input: &'a BitSlice<u8, Lsb0>,
                 ctx: Ctx,
-            ) -> Result<(&'a BitSlice<u8, Msb0>, Self), DekuError>
+            ) -> Result<(&'a BitSlice<u8, Lsb0>, Self), DekuError>
             where
                 Self: Sized,
             {
@@ -57,7 +57,7 @@ macro_rules! ImplDekuTupleTraits {
         impl<Ctx: Copy, $($T:DekuWrite<Ctx>),+> DekuWrite<Ctx> for ($($T,)+)
         {
             #[allow(non_snake_case)]
-            fn write(&self, output: &mut BitVec<u8, Msb0>, ctx: Ctx) -> Result<(), DekuError> {
+            fn write(&self, output: &mut BitVec<u8, Lsb0>, ctx: Ctx) -> Result<(), DekuError> {
                 let ($(ref $T,)+) = *self;
                 $(
                     $T.write(output, ctx)?;
@@ -89,16 +89,16 @@ mod tests {
     use rstest::rstest;
 
     #[rstest(input, expected, expected_rest,
-        case::length_1([0xef, 0xbe, 0xad, 0xde].as_ref(), (native_endian!(0xdeadbeef_u32),), bits![u8, Msb0;]),
-        case::length_2([1, 0x24, 0x98, 0x82, 0].as_ref(), (true, native_endian!(0x829824_u32)), bits![u8, Msb0;]),
-        case::length_11([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].as_ref(), (0u8, 1u8, 2u8, 3u8, 4u8, 5u8, 6u8, 7u8, 8u8, 9u8, 10u8), bits![u8, Msb0;]),
-        case::extra_rest([1, 0x24, 0x98, 0x82, 0, 0].as_ref(), (true, native_endian!(0x829824_u32)), bits![u8, Msb0; 0, 0, 0, 0, 0, 0, 0, 0]),
+        case::length_1([0xef, 0xbe, 0xad, 0xde].as_ref(), (native_endian!(0xdeadbeef_u32),), bits![u8, Lsb0;]),
+        case::length_2([1, 0x24, 0x98, 0x82, 0].as_ref(), (true, native_endian!(0x829824_u32)), bits![u8, Lsb0;]),
+        case::length_11([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].as_ref(), (0u8, 1u8, 2u8, 3u8, 4u8, 5u8, 6u8, 7u8, 8u8, 9u8, 10u8), bits![u8, Lsb0;]),
+        case::extra_rest([1, 0x24, 0x98, 0x82, 0, 0].as_ref(), (true, native_endian!(0x829824_u32)), bits![u8, Lsb0; 0, 0, 0, 0, 0, 0, 0, 0]),
     )]
-    fn test_tuple_read<'a, T>(input: &'a [u8], expected: T, expected_rest: &BitSlice<u8, Msb0>)
+    fn test_tuple_read<'a, T>(input: &'a [u8], expected: T, expected_rest: &BitSlice<u8, Lsb0>)
     where
         T: DekuRead<'a> + Sized + PartialEq + Debug,
     {
-        let bit_slice = input.view_bits::<Msb0>();
+        let bit_slice = input.view_bits::<Lsb0>();
         let (rest, res_read) = <T>::read(bit_slice, ()).unwrap();
         assert_eq!(expected, res_read);
         assert_eq!(expected_rest, rest);
@@ -113,7 +113,7 @@ mod tests {
     where
         T: DekuWrite,
     {
-        let mut res_write = bitvec![u8, Msb0;];
+        let mut res_write = bitvec![u8, Lsb0;];
         input.write(&mut res_write, ()).unwrap();
         assert_eq!(expected, res_write.into_vec());
     }

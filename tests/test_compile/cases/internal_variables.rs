@@ -1,5 +1,5 @@
 use deku::prelude::*;
-use deku::bitvec::{BitVec, BitSlice, Msb0};
+use deku::bitvec::{BitVec, BitSlice, Lsb0};
 
 #[derive(DekuRead, DekuWrite)]
 struct TestCount {
@@ -52,8 +52,8 @@ struct TestMap {
 
 fn dummy_reader(
     offset: usize,
-    rest: &BitSlice<u8, Msb0>,
-) -> Result<(&BitSlice<u8, Msb0>, usize), DekuError> {
+    rest: &BitSlice<u8, Lsb0>,
+) -> Result<(&BitSlice<u8, Lsb0>, usize), DekuError> {
     Ok((rest, offset))
 }
 #[derive(DekuRead, DekuWrite)]
@@ -76,7 +76,7 @@ struct TestCtx {
 
 fn dummy_writer(
     _offset: usize,
-    _output: &mut BitVec<u8, Msb0>,
+    _output: &mut BitVec<u8, Lsb0>,
 ) -> Result<(), DekuError> {
     Ok(())
 }

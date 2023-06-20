@@ -15,9 +15,9 @@ impl<'a, T: DekuRead<'a, Ctx>, Ctx: Copy> DekuRead<'a, Ctx> for Option<T> {
     /// assert_eq!(v, Some(0x04030201))
     /// ```
     fn read(
-        input: &'a BitSlice<u8, Msb0>,
+        input: &'a BitSlice<u8, Lsb0>,
         inner_ctx: Ctx,
-    ) -> Result<(&'a BitSlice<u8, Msb0>, Self), DekuError>
+    ) -> Result<(&'a BitSlice<u8, Lsb0>, Self), DekuError>
     where
         Self: Sized,
     {
@@ -32,13 +32,13 @@ impl<T: DekuWrite<Ctx>, Ctx: Copy> DekuWrite<Ctx> for Option<T> {
     /// # Examples
     /// ```rust
     /// # use deku::{ctx::Endian, DekuWrite};
-    /// # use deku::bitvec::{bitvec, Msb0};
+    /// # use deku::bitvec::{bitvec, Lsb0};
     /// let data = Some(1u8);
-    /// let mut output = bitvec![u8, Msb0;];
+    /// let mut output = bitvec![u8, Lsb0;];
     /// data.write(&mut output, Endian::Big).unwrap();
-    /// assert_eq!(output, bitvec![u8, Msb0; 0, 0, 0, 0, 0, 0, 0, 1])
+    /// assert_eq!(output, bitvec![u8, Lsb0; 0, 0, 0, 0, 0, 0, 0, 1])
     /// ```
-    fn write(&self, output: &mut BitVec<u8, Msb0>, inner_ctx: Ctx) -> Result<(), DekuError> {
+    fn write(&self, output: &mut BitVec<u8, Lsb0>, inner_ctx: Ctx) -> Result<(), DekuError> {
         self.as_ref().map_or(Ok(()), |v| v.write(output, inner_ctx))
     }
 }

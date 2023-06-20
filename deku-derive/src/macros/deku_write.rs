@@ -49,7 +49,7 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
             quote! {
                 match *self {
                     #destructured => {
-                        let mut __deku_acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0> = ::#crate_::bitvec::BitVec::new();
+                        let mut __deku_acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0> = ::#crate_::bitvec::BitVec::new();
                         let __deku_output = &mut __deku_acc;
 
                         #magic_write
@@ -64,7 +64,7 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
         );
 
         tokens.extend(quote! {
-            impl #imp core::convert::TryFrom<#ident> for ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0> #wher {
+            impl #imp core::convert::TryFrom<#ident> for ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0> #wher {
                 type Error = ::#crate_::DekuError;
 
                 fn try_from(input: #ident) -> core::result::Result<Self, Self::Error> {
@@ -82,12 +82,12 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
 
             impl #imp DekuContainerWrite for #ident #wher {
                 fn to_bytes(&self) -> core::result::Result<Vec<u8>, ::#crate_::DekuError> {
-                    let mut acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0> = self.to_bits()?;
+                    let mut acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0> = self.to_bits()?;
                     Ok(acc.into_vec())
                 }
 
                 #[allow(unused_variables)]
-                fn to_bits(&self) -> core::result::Result<::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0>, ::#crate_::DekuError> {
+                fn to_bits(&self) -> core::result::Result<::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0>, ::#crate_::DekuError> {
                     #to_bits_body
                 }
             }
@@ -122,7 +122,7 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
 
         impl #imp DekuWrite<#ctx_types> for #ident #wher {
             #[allow(unused_variables)]
-            fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0>, #ctx_arg) -> core::result::Result<(), ::#crate_::DekuError> {
+            fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0>, #ctx_arg) -> core::result::Result<(), ::#crate_::DekuError> {
                 #write_body
             }
         }
@@ -134,7 +134,7 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
         tokens.extend(quote! {
             impl #imp DekuWrite for #ident #wher {
                 #[allow(unused_variables)]
-                fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0>, _: ()) -> core::result::Result<(), ::#crate_::DekuError> {
+                fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0>, _: ()) -> core::result::Result<(), ::#crate_::DekuError> {
                     #write_body
                 }
             }
@@ -260,7 +260,7 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
     if input.ctx.is_none() || (input.ctx.is_some() && input.ctx_default.is_some()) {
         let to_bits_body = wrap_default_ctx(
             quote! {
-                let mut __deku_acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0> = ::#crate_::bitvec::BitVec::new();
+                let mut __deku_acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0> = ::#crate_::bitvec::BitVec::new();
                 let __deku_output = &mut __deku_acc;
 
                 #magic_write
@@ -276,7 +276,7 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
         );
 
         tokens.extend(quote! {
-            impl #imp core::convert::TryFrom<#ident> for ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0> #wher {
+            impl #imp core::convert::TryFrom<#ident> for ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0> #wher {
                 type Error = ::#crate_::DekuError;
 
                 fn try_from(input: #ident) -> core::result::Result<Self, Self::Error> {
@@ -294,12 +294,12 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
 
             impl #imp DekuContainerWrite for #ident #wher {
                 fn to_bytes(&self) -> core::result::Result<Vec<u8>, ::#crate_::DekuError> {
-                    let mut acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0> = self.to_bits()?;
+                    let mut acc: ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0> = self.to_bits()?;
                     Ok(acc.into_vec())
                 }
 
                 #[allow(unused_variables)]
-                fn to_bits(&self) -> core::result::Result<::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0>, ::#crate_::DekuError> {
+                fn to_bits(&self) -> core::result::Result<::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0>, ::#crate_::DekuError> {
                     #to_bits_body
                 }
             }
@@ -336,7 +336,7 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
 
         impl #imp DekuWrite<#ctx_types> for #ident #wher {
             #[allow(unused_variables)]
-            fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0>, #ctx_arg) -> core::result::Result<(), ::#crate_::DekuError> {
+            fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0>, #ctx_arg) -> core::result::Result<(), ::#crate_::DekuError> {
                 #write_body
             }
         }
@@ -348,7 +348,7 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
         tokens.extend(quote! {
             impl #imp DekuWrite for #ident #wher {
                 #[allow(unused_variables)]
-                fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Msb0>, _: ()) -> core::result::Result<(), ::#crate_::DekuError> {
+                fn write(&self, __deku_output: &mut ::#crate_::bitvec::BitVec<u8, ::#crate_::bitvec::Lsb0>, _: ()) -> core::result::Result<(), ::#crate_::DekuError> {
                     #write_body
                 }
             }

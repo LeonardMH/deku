@@ -794,7 +794,7 @@ Specify custom reader or writer tokens for reading a field or variant
 Example:
 ```rust
 use std::convert::{TryInto, TryFrom};
-use deku::bitvec::{BitSlice, BitVec, Msb0};
+use deku::bitvec::{BitSlice, BitVec, Lsb0};
 use deku::prelude::*;
 
 # #[derive(PartialEq, Debug, DekuRead, DekuWrite)]
@@ -809,14 +809,14 @@ struct DekuTest {
 impl DekuTest {
     /// Read and convert to String
     fn read(
-        rest: &BitSlice<u8, Msb0>,
-    ) -> Result<(&BitSlice<u8, Msb0>, String), DekuError> {
+        rest: &BitSlice<u8, Lsb0>,
+    ) -> Result<(&BitSlice<u8, Lsb0>, String), DekuError> {
         let (rest, value) = u8::read(rest, ())?;
         Ok((rest, value.to_string()))
     }
 
     /// Parse from String to u8 and write
-    fn write(output: &mut BitVec<u8, Msb0>, field_a: &str) -> Result<(), DekuError> {
+    fn write(output: &mut BitVec<u8, Lsb0>, field_a: &str) -> Result<(), DekuError> {
         let value = field_a.parse::<u8>().unwrap();
         value.write(output, ())
     }

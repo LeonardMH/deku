@@ -240,9 +240,9 @@ These are provided as a convenience to the user.
 Always included:
 - `deku::input: (&[u8], usize)` - The initial input byte slice and bit offset
 (available when using [from_bytes](crate::DekuContainerRead::from_bytes))
-- `deku::input_bits: &BitSlice<u8, Msb0>` - The initial input in bits
-- `deku::rest: &BitSlice<u8, Msb0>` - Remaining bits to read
-- `deku::output: &mut BitSlice<u8, Msb0>` - The output bit stream
+- `deku::input_bits: &BitSlice<u8, Lsb0>` - The initial input in bits
+- `deku::rest: &BitSlice<u8, Lsb0>` - Remaining bits to read
+- `deku::output: &mut BitSlice<u8, Lsb0>` - The output bit stream
 
 Conditionally included if referenced:
 - `deku::bit_offset: usize` - Current bit offset from the input
@@ -297,9 +297,9 @@ pub trait DekuRead<'a, Ctx = ()> {
     ///
     /// Returns the remaining bits after parsing in addition to Self.
     fn read(
-        input: &'a bitvec::BitSlice<u8, bitvec::Msb0>,
+        input: &'a bitvec::BitSlice<u8, bitvec::Lsb0>,
         ctx: Ctx,
-    ) -> Result<(&'a bitvec::BitSlice<u8, bitvec::Msb0>, Self), DekuError>
+    ) -> Result<(&'a bitvec::BitSlice<u8, bitvec::Lsb0>, Self), DekuError>
     where
         Self: Sized;
 }
@@ -324,7 +324,7 @@ pub trait DekuWrite<Ctx = ()> {
     /// needed.
     fn write(
         &self,
-        output: &mut bitvec::BitVec<u8, bitvec::Msb0>,
+        output: &mut bitvec::BitVec<u8, bitvec::Lsb0>,
         ctx: Ctx,
     ) -> Result<(), DekuError>;
 }
@@ -336,7 +336,7 @@ pub trait DekuContainerWrite: DekuWrite<()> {
     fn to_bytes(&self) -> Result<Vec<u8>, DekuError>;
 
     /// Write struct/enum to BitVec
-    fn to_bits(&self) -> Result<bitvec::BitVec<u8, bitvec::Msb0>, DekuError>;
+    fn to_bits(&self) -> Result<bitvec::BitVec<u8, bitvec::Lsb0>, DekuError>;
 }
 
 /// "Updater" trait: apply mutations to a type
@@ -360,7 +360,7 @@ where
     /// Write value of type to bits
     fn write(
         &self,
-        output: &mut bitvec::BitVec<u8, bitvec::Msb0>,
+        output: &mut bitvec::BitVec<u8, bitvec::Lsb0>,
         ctx: Ctx,
     ) -> Result<(), DekuError> {
         <T>::write(self, output, ctx)?;

@@ -63,7 +63,7 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
             quote! {
                 use core::convert::TryFrom;
                 use ::#crate_::bitvec::BitView;
-                let __deku_input_bits = __deku_input.0.view_bits::<::#crate_::bitvec::Msb0>();
+                let __deku_input_bits = __deku_input.0.view_bits::<::#crate_::bitvec::Lsb0>();
 
                 let mut __deku_rest = __deku_input_bits;
                 __deku_rest = &__deku_rest[__deku_input.1..];
@@ -109,7 +109,7 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
 
     tokens.extend(quote! {
         impl #imp ::#crate_::DekuRead<#lifetime, #ctx_types> for #ident #wher {
-            fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, #ctx_arg) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, Self), ::#crate_::DekuError> {
+            fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, #ctx_arg) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, Self), ::#crate_::DekuError> {
                 #read_body
             }
         }
@@ -120,7 +120,7 @@ fn emit_struct(input: &DekuData) -> Result<TokenStream, syn::Error> {
 
         tokens.extend(quote! {
             impl #imp ::#crate_::DekuRead<#lifetime> for #ident #wher {
-                fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, _: ()) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, Self), ::#crate_::DekuError> {
+                fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, _: ()) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, Self), ::#crate_::DekuError> {
                     #read_body
                 }
             }
@@ -316,7 +316,7 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
             quote! {
                 use core::convert::TryFrom;
                 use ::#crate_::bitvec::BitView;
-                let __deku_input_bits = __deku_input.0.view_bits::<::#crate_::bitvec::Msb0>();
+                let __deku_input_bits = __deku_input.0.view_bits::<::#crate_::bitvec::Lsb0>();
 
                 let mut __deku_rest = __deku_input_bits;
                 __deku_rest = &__deku_rest[__deku_input.1..];
@@ -360,7 +360,7 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
     tokens.extend(quote! {
         #[allow(non_snake_case)]
         impl #imp ::#crate_::DekuRead<#lifetime, #ctx_types> for #ident #wher {
-            fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, #ctx_arg) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, Self), ::#crate_::DekuError> {
+            fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, #ctx_arg) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, Self), ::#crate_::DekuError> {
                 #read_body
             }
         }
@@ -372,7 +372,7 @@ fn emit_enum(input: &DekuData) -> Result<TokenStream, syn::Error> {
         tokens.extend(quote! {
             #[allow(non_snake_case)]
             impl #imp ::#crate_::DekuRead<#lifetime> for #ident #wher {
-                fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, _: ()) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Msb0>, Self), ::#crate_::DekuError> {
+                fn read(__deku_input_bits: &#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, _: ()) -> core::result::Result<(&#lifetime ::#crate_::bitvec::BitSlice<u8, ::#crate_::bitvec::Lsb0>, Self), ::#crate_::DekuError> {
                     #read_body
                 }
             }
