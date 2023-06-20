@@ -120,7 +120,14 @@ macro_rules! ImplDekuReadBits {
                         } else {
                             0
                         };
-                        for _ in 0..pad {
+
+                        // TODO: For Msb0-first this pad loop needs to go in the opposite
+                        //       direction(as shown below)
+                        //
+                        // for _ in 0..pad {
+                        //     bits.insert(index, false);
+                        // }
+                        for _ in pad..0 {
                             bits.insert(index, false);
                         }
 
