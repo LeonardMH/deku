@@ -11,6 +11,11 @@ Declarative binary reading and writing
 This crate provides bit-level, symmetric, serialization/deserialization
 implementations for structs and enums
 
+> WARNING: This repo is a fork of deku that adds fixed support for LSb-first
+> bit ordering rather than MSb-first. I have no intention to maintain long-term
+> support for this and you should not depend on it in your projects. Ideally,
+> this functionality will be integrated directly into deku.
+
 ## Why use Deku
 
 **Productivity**: Deku will generate symmetric reader/writer functions for your type!
